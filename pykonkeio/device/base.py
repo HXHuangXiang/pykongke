@@ -1,6 +1,7 @@
 from .. import manager
 from .. import socket
 from .. import error
+import uuid
 
 
 class BaseDevice(object):
@@ -11,7 +12,9 @@ class BaseDevice(object):
         self.mac = None
         self.password = None
         self.is_online = False
+        self.is_updating = False
         self.loop = loop
+        self.uuid = uuid.uuid4().hex
 
     async def fetch_info(self):
         try:
