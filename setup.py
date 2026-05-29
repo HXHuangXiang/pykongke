@@ -7,7 +7,7 @@ with open("README.md", 'r', encoding='utf-8') as f:
 
 setup(
     name='pykongke',
-    version='2.2.0',
+    version='3.0.0',
     keywords=['konke', 'iot'],
     description='Python library for interfacing with konke smart appliances',
     long_description=readme,

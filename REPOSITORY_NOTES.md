@@ -1,6 +1,6 @@
 # Repository Notes
 
-Distribution name: `pykongke`. Import package: `pykongke`. CLI command: `pykongke`.
+Distribution name: `pykongke`. Current release line: `3.x`. Import package: `pykongke`. CLI command: `pykongke`.
 
 This project is an asyncio-based LAN client for Konke smart devices. It sends encrypted UDP commands to devices on port `27431` and listens for encrypted UDP responses on the same socket.
 
