@@ -15,22 +15,24 @@ class Mul(BaseMul):
     def socket_count(self):
         return SOCKET_COUNT
 
+    def _parse_usb_id(self, action):
+        device_id = action[-1:]
+        if device_id.isnumeric() and 0 < int(device_id) <= self.usb_count:
+            return int(device_id) - 1
+        return None
+
     async def do(self, action, value=None):
-        usb_device_id = action[-1:0]
-        if usb_device_id.isnumeric() and 0 < int(usb_device_id) <= self.socket_count:
-            usb_device_id = int(usb_device_id - 1)
-        else:
-            usb_device_id = False
+        usb_device_id = self._parse_usb_id(action)
 
         if action == 'get_usb_count':
             return USB_COUNT
         elif action == 'get_usb_status_all':
             return 'on' if all(status == 'open' for status in self.usb_status) else 'off'
-        elif action[:-1] == 'get_usb_status' and usb_device_id:
+        elif action[:-1] == 'get_usb_status' and usb_device_id is not None:
             return 'on' if self.usb_status[usb_device_id] == 'open' else 'off'
-        elif action == 'turn_on_usb' and usb_device_id:
+        elif action[:-1] == 'turn_on_usb' and usb_device_id is not None:
             await self.turn_on_usb(usb_device_id)
-        elif action == 'turn_off_usb' and usb_device_id:
+        elif action[:-1] == 'turn_off_usb' and usb_device_id is not None:
             await self.turn_off_usb(usb_device_id)
         else:
             return await super().do(action, value)
@@ -46,13 +48,14 @@ class Mul(BaseMul):
         else:
             self.is_updating = True
 
-        await super().update(update_flag=False, **kwargs)
-        res = await self.send_message('check', 'usb', **kwargs)
-        usb_status = res.split(',')
-        for index, t in enumerate(usb_status[:self.usb_count]):
-            self.usb_status[index] = t[:-1]
-
-        self.is_updating = False
+        try:
+            await super().update(update_flag=False, **kwargs)
+            res = await self.send_message('check', 'usb', **kwargs)
+            usb_status = res.split(',')
+            for index, t in enumerate(usb_status[:self.usb_count]):
+                self.usb_status[index] = t[:-1]
+        finally:
+            self.is_updating = False
 
     """
         打开USB

@@ -16,6 +16,7 @@ class MockK2(MockBaseDevice):
         self.ir_learn_start = None
         self.rf_learn_start = None
 
+    @property
     def heart_response(self):
         cmd = self.status + '#'
         if self.ir_module:
@@ -51,7 +52,7 @@ class MockK2(MockBaseDevice):
             elif action == 'operate#3031#quit':
                 self.ir_learn_start = None
         elif action.startswith('check#3031') and device_type == 'uart':
-            if time.time() - time.time() < 2:
+            if time.time() - self.ir_learn_start < 2:
                 self.send_message(src, action, 'uack')
             elif action.endswith('0'):
                 self.send_message(src, action + '#failed', 'uack')
@@ -64,7 +65,7 @@ class MockK2(MockBaseDevice):
             elif action == 'operate#3035#quit':
                 self.rf_learn_start = None
         elif action.startswith('check#3035') and device_type == 'uart':
-            if time.time() - time.time() < 2:
+            if time.time() - self.rf_learn_start < 2:
                 self.send_message(src, action, 'uack')
             elif action.endswith('0'):
                 self.send_message(src, action + '#failed', 'uack')

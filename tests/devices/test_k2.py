@@ -106,6 +106,25 @@ async def test_check_power(server: MockK2, client: K2):
         assert float(server.last_power) == float(client_power)
 
 
+def test_learning_state_initialized(client: K2):
+    assert client.ir_learning is False
+    assert client.rf_learning is False
+
+
+# noinspection 801,PyShadowingNames
+@pytest.mark.asyncio
+async def test_update_resets_updating_after_error(client: K2, monkeypatch):
+    async def raise_error(*_, **__):
+        raise RuntimeError('boom')
+
+    monkeypatch.setattr(client, 'send_message', raise_error)
+
+    with pytest.raises(RuntimeError):
+        await client.update()
+
+    assert client.is_updating is False
+
+
 # noinspection 801,PyShadowingNames
 @pytest.mark.asyncio
 async def test_update(server: MockK2, client: K2):
@@ -175,6 +194,7 @@ async def test_ir(server: MockK2, client: K2):
         await client.fetch_info()
 
     if client.is_support_ir:
+        assert server is None or server.ir_module is True
         test_group = 'test_group'
         test_ir_id = '1000'
         test_ir_id1 = '1001'
@@ -208,6 +228,7 @@ async def test_rf(server: MockK2, client: K2):
         await client.fetch_info()
 
     if client.is_support_rf:
+        assert server is None or server.rf_module is True
         test_group = 'test_group'
         test_rf_id = '1000'
         test_rf_id1 = '1001'

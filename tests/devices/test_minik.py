@@ -74,6 +74,10 @@ async def test_update(server: MockMiniK, client: MiniK):
         assert client.status == 'close'
 
 
+def test_learning_state_initialized(client: MiniK):
+    assert client.ir_learning is False
+
+
 # noinspection 801,PyShadowingNames
 @pytest.mark.asyncio
 async def test_ir(server: MockMiniK, client: MiniK):
@@ -83,6 +87,7 @@ async def test_ir(server: MockMiniK, client: MiniK):
     await client.update()
 
     if client.is_support_ir:
+        assert server is None or server.is_pro is True
         test_group = 'test_group'
         test_ir_id = '1000'
         test_ir_id1 = '1001'

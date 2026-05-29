@@ -73,6 +73,48 @@ async def test_turn_off_all(server: MockMicMul, client: MicMul):
 
 # noinspection 801,PyShadowingNames
 @pytest.mark.asyncio
+async def test_do_socket_actions(client: MicMul, monkeypatch):
+    called = []
+
+    async def turn_on(index):
+        called.append(('on', index))
+        client.status[index] = 'open'
+
+    async def turn_off(index):
+        called.append(('off', index))
+        client.status[index] = 'close'
+
+    monkeypatch.setattr(client, 'turn_on', turn_on)
+    monkeypatch.setattr(client, 'turn_off', turn_off)
+
+    client.status = ['open', 'close', 'close', 'close']
+    assert await client.do('get_status1') == 'on'
+    assert await client.do('get_status2') == 'off'
+
+    await client.do('turn_on_socket2')
+    assert client.status[1] == 'open'
+
+    await client.do('turn_off_socket1')
+    assert client.status[0] == 'close'
+    assert called == [('on', 1), ('off', 0)]
+
+
+# noinspection 801,PyShadowingNames
+@pytest.mark.asyncio
+async def test_update_resets_updating_after_error(client: MicMul, monkeypatch):
+    async def raise_error(*_, **__):
+        raise RuntimeError('boom')
+
+    monkeypatch.setattr(client, 'send_message', raise_error)
+
+    with pytest.raises(RuntimeError):
+        await client.update()
+
+    assert client.is_updating is False
+
+
+# noinspection 801,PyShadowingNames
+@pytest.mark.asyncio
 async def test_update(server: MockMicMul, client: MicMul):
     if server:
         server.start()

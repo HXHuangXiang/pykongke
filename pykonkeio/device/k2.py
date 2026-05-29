@@ -7,6 +7,8 @@ class K2(BaseToggle, IRMixin, RFMixin):
 
     def __init__(self, ip, **kwargs):
         super().__init__(ip, 'relay', **kwargs)
+        self.ir_learning = False
+        self.rf_learning = False
         self.light_status = 'close'
         self.usb_status = 'close'
         self.rf_module = False
@@ -54,12 +56,13 @@ class K2(BaseToggle, IRMixin, RFMixin):
         else:
             self.is_updating = True
 
-        await super().update(update_flag=False, **kwargs)
+        try:
+            await super().update(update_flag=False, **kwargs)
 
-        self.usb_status = await self.send_message('check', 'usb', **kwargs)
-        self.light_status = await self.send_message('check', 'light', **kwargs)
-
-        self.is_updating = False
+            self.usb_status = await self.send_message('check', 'usb', **kwargs)
+            self.light_status = await self.send_message('check', 'light', **kwargs)
+        finally:
+            self.is_updating = False
 
     """
         打开USB

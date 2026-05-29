@@ -99,6 +99,48 @@ async def test_turn_off_usb(server: MockMul, client: Mul):
 
 # noinspection 801,PyShadowingNames
 @pytest.mark.asyncio
+async def test_do_usb_actions(client: Mul, monkeypatch):
+    called = []
+
+    async def turn_on_usb(index):
+        called.append(('on', index))
+        client.usb_status[index] = 'open'
+
+    async def turn_off_usb(index):
+        called.append(('off', index))
+        client.usb_status[index] = 'close'
+
+    monkeypatch.setattr(client, 'turn_on_usb', turn_on_usb)
+    monkeypatch.setattr(client, 'turn_off_usb', turn_off_usb)
+
+    client.usb_status = ['open', 'close']
+    assert await client.do('get_usb_status1') == 'on'
+    assert await client.do('get_usb_status2') == 'off'
+
+    await client.do('turn_on_usb2')
+    assert client.usb_status[1] == 'open'
+
+    await client.do('turn_off_usb1')
+    assert client.usb_status[0] == 'close'
+    assert called == [('on', 1), ('off', 0)]
+
+
+# noinspection 801,PyShadowingNames
+@pytest.mark.asyncio
+async def test_update_resets_updating_after_error(client: Mul, monkeypatch):
+    async def raise_error(*_, **__):
+        raise RuntimeError('boom')
+
+    monkeypatch.setattr(client, 'send_message', raise_error)
+
+    with pytest.raises(RuntimeError):
+        await client.update()
+
+    assert client.is_updating is False
+
+
+# noinspection 801,PyShadowingNames
+@pytest.mark.asyncio
 async def test_update(server: MockMul, client: Mul):
     if server:
         server.start()

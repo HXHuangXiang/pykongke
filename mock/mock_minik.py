@@ -9,6 +9,7 @@ class MockMiniK(MockBaseDevice):
         self.is_pro = is_pro
         self.learn_start = None
 
+    @property
     def heart_response(self):
         if self.is_pro:
             return '%s#%s#%s' % (self.status, 'hv2.0.3', 'sv2.0.7')
@@ -28,7 +29,7 @@ class MockMiniK(MockBaseDevice):
             elif action == 'operate#3031#quit':
                 self.learn_start = None
         elif action.startswith('check#3031') and device_type == 'uart':
-            if time.time() - time.time() < 2:
+            if time.time() - self.learn_start < 2:
                 self.send_message(src, action, 'uack')
             elif action.endswith('0'):
                 self.send_message(src, action + '#failed', 'uack')

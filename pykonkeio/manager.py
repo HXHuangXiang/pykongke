@@ -12,9 +12,9 @@ _device_info = {}
 
 async def search(ip='255.255.255.255', callback=None, loop=None):
     datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    socket.send(ip, 'mac', 'nopassword', datetime, 'heart')
 
-    future = asyncio.Future(loop=loop)
+    loop = asyncio.get_running_loop()
+    future = loop.create_future()
 
     def message_handler(*data):
         if data[4] != 'hack':
@@ -27,6 +27,7 @@ async def search(ip='255.255.255.255', callback=None, loop=None):
 
     socket.add_message_handler(message_handler)
     try:
+        socket.send(ip, 'mac', 'nopassword', datetime, 'heart')
         return await asyncio.wait_for(future, timeout=2)
     except asyncio.TimeoutError:
         raise error.Timeout
@@ -35,8 +36,9 @@ async def search(ip='255.255.255.255', callback=None, loop=None):
 
 
 def get_device(ip, device_type=None):
-    if ip in _devices:
-        return _devices[ip]
+    device_key = (ip, device_type)
+    if device_key in _devices:
+        return _devices[device_key]
 
     if device_type is None:
         from .device.basetoggle import BaseToggle
@@ -65,7 +67,7 @@ def get_device(ip, device_type=None):
     else:
         raise error.DeviceNotSupport('device %s not support' % device_type)
 
-    _devices[ip] = device
+    _devices[device_key] = device
     return device
 
 

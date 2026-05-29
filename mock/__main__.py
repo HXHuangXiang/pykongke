@@ -1,10 +1,10 @@
-import asyncio
 import logging
 import argparse
 import sys
+import asyncio
 
 
-def main(event_loop):
+async def main():
     parser = argparse.ArgumentParser(prog="konkeio")
     parser.add_argument('device', help='device type')
 
@@ -36,20 +36,18 @@ def main(event_loop):
         logging.error('Device not support: %s', device_type)
         return False
 
-    device.start(event_loop)
-    return True
+    device.start()
+    try:
+        await asyncio.Future()
+    finally:
+        device.stop()
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG,
                         datefmt='%Y/%m/%d %H:%M:%S',
                         format='%(asctime)s %(levelname)s %(message)s')
-    loop = asyncio.get_event_loop()
-
-    if not main(loop):
-        sys.exit(0)
-
     try:
-        loop.run_forever()
+        asyncio.run(main())
     except KeyboardInterrupt:
         sys.exit(0)

@@ -5,6 +5,7 @@ from ..mixin.ir import IRMixin
 class MiniK(BaseToggle, IRMixin):
     def __init__(self, ip, **kwargs):
         super().__init__(ip, **kwargs)
+        self.ir_learning = False
         self.is_pro = None
 
     @property

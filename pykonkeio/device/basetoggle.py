@@ -29,10 +29,11 @@ class BaseToggle(BaseDevice):
             else:
                 self.is_updating = True
 
-        self.status = await self.send_message('check', **kwargs)
-
-        if update_flag:
-            self.is_updating = False
+        try:
+            self.status = await self.send_message('check', **kwargs)
+        finally:
+            if update_flag:
+                self.is_updating = False
 
     """
         打开开关

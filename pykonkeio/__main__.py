@@ -90,8 +90,8 @@ async def main():
         except error.KonkeError as err:
             print(err)
 
-    current = asyncio.Task.current_task()
-    for task in asyncio.Task.all_tasks():
+    current = asyncio.current_task()
+    for task in asyncio.all_tasks():
         if task != current:
             task.cancel()
 
@@ -101,10 +101,8 @@ if __name__ == "__main__":
                         datefmt='%Y/%m/%d %H:%M:%S',
                         format='%(asctime)s %(levelname)s %(message)s')
 
-    loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(main())
+        asyncio.run(main())
     except KeyboardInterrupt:
         pass
-    loop.stop()
 

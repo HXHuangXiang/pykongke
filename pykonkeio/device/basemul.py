@@ -11,22 +11,24 @@ class BaseMul(BaseDevice):
     def socket_count(self):
         return 0
 
-    async def do(self, action, value=None):
-        device_id = action[-1:0]
+    def _parse_socket_id(self, action):
+        device_id = action[-1:]
         if device_id.isnumeric() and 0 < int(device_id) <= self.socket_count:
-            device_id = int(device_id - 1)
-        else:
-            device_id = False
+            return int(device_id) - 1
+        return None
+
+    async def do(self, action, value=None):
+        device_id = self._parse_socket_id(action)
 
         if action == 'get_count':
             return self.socket_count
         elif action == 'get_status_all':
             return 'on' if all(status == 'open' for status in self.status) else 'off'
-        elif action[:-1] == 'get_status' and device_id:
+        elif action[:-1] == 'get_status' and device_id is not None:
             return 'on' if self.status[device_id] == 'open' else 'off'
-        elif action == 'turn_on_socket' and device_id:
+        elif action[:-1] == 'turn_on_socket' and device_id is not None:
             await self.turn_on(device_id)
-        elif action == 'turn_off_socket' and device_id:
+        elif action[:-1] == 'turn_off_socket' and device_id is not None:
             await self.turn_off(device_id)
         elif action == 'turn_on_all':
             await self.turn_on_all()
@@ -48,13 +50,14 @@ class BaseMul(BaseDevice):
             else:
                 self.is_updating = True
 
-        res = await self.send_message('check', **kwargs)
-        status = res.split(',')
-        for index, t in enumerate(status[:self.socket_count]):
-            self.status[index] = t[:-1]
-
-        if update_flag:
-            self.is_updating = False
+        try:
+            res = await self.send_message('check', **kwargs)
+            status = res.split(',')
+            for index, t in enumerate(status[:self.socket_count]):
+                self.status[index] = t[:-1]
+        finally:
+            if update_flag:
+                self.is_updating = False
 
     """
         开启插孔

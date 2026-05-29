@@ -19,9 +19,15 @@ setup(
     install_requires=[
         'pycryptodome>=3.6.0'
     ],
+    extras_require={
+        'test': [
+            'pytest',
+            'pytest-asyncio',
+        ],
+    },
     packages=find_packages(include=['pykonkeio', 'pykonkeio.*']),
     include_package_data=True,
-    python_requires='>=3.5',
+    python_requires='>=3.7',
     test_suite='tests',
     entry_points={
         'console_scripts': [
