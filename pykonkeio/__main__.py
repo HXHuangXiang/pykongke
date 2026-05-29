@@ -38,8 +38,8 @@ konkeio get_status2 mul 192.168.0.64
 konkeio turn_off_all mul 192.168.0.64
 konkeio get_brightness klight 192.168.0.64
 konkeio set_color klight 192.168.0.64 255,255,0
-konkeio set_ct bulb 192.168.0.64 3400
-konkeio turn_off bulb 192.168.0.64
+konkeio set_ct kbulb 192.168.0.64 3400
+konkeio turn_off kbulb 192.168.0.64
 '''
 
 

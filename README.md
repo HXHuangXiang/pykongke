@@ -21,7 +21,16 @@ Since some of Konke's device does not have a clear model, I used internal code t
 ## Install
 
 ```bash
-    pip install pykoneio
+pip install pykonkeio
+```
+
+Python 3.7+ is required.
+
+For development and tests:
+
+```bash
+python -m pip install -e ".[test]"
+python -m pytest -q -s
 ```
 
 ## API Reference
@@ -43,6 +52,7 @@ Since some of Konke's device does not have a clear model, I used internal code t
     - turn_off_usb()
     - turn_on_light()
     - turn_off_light()
+    - get_power()
     - is_support_ir()
     - ir_learn()
     - ir_quit()
@@ -55,7 +65,7 @@ Since some of Konke's device does not have a clear model, I used internal code t
     - rf_emit()
     - rf_remove()
     - rf_remove_group()
-- MinK(ip)
+- MiniK(ip)
     - is_online
     - status
     - update()
@@ -110,17 +120,25 @@ Since some of Konke's device does not have a clear model, I used internal code t
 Demo:
 
 ```python
+import asyncio
+from pykonkeio import K2
 
-    from pykonkeio import K2
 
-    k2 = K2('192.168.0.222')
+async def main():
+    k2 = K2("192.168.0.222")
+    await k2.update()
 
     if not k2.is_online:
-        print('switch is off line')
+        print("switch is off line")
+        return
+
     if k2.status == 'open':
-        k2.turn_off()
+        await k2.turn_off()
     elif k2.status == 'close':
-        k2.turn_on()
+        await k2.turn_on()
+
+
+asyncio.run(main())
 ```
 
 ## CLI Command
@@ -129,9 +147,9 @@ Demo:
 usage: konkeio [action] [device] [address] [value] [--verbose]
 
 Supported devices and actions supported by each device:
-global: search
-k2:     get_status turn_[on/off] turn_[on/off]_usb turn_[on/off]_light
-minik:  get_status turn_[on/off]
+global: search help
+k2:     get_status turn_[on/off] get_usb_status turn_[on/off]_usb get_light_status turn_[on/off]_light get_power
+minik:  get_status turn_[on/off] learn_ir emit_ir remove_ir
 micmul: get_count get_status_all get_status[1/2/3/4] turn_[on/off]_all turn_[on/off]_socket[1/2/3/4]
 mul:    get_count get_status_all get_status[1/2/3] get_usb_count get_usb_status_all get_usb_status[1/2]
         turn_[on/off]_all turn_[on/off]_socket[1/2/3] turn_[on/off]_usb[1/2]
@@ -148,6 +166,7 @@ example:
 konkeio search
 konkeio turn_on minik 192.168.0.64
 konkeio get_status minik 192.168.0.64
+konkeio get_power k2 192.168.0.64
 konkeio turn_on_usb k2 192.168.0.64
 konkeio turn_off_light k2 192.168.0.64
 konkeio get_count micmul 192.168.0.64
@@ -157,5 +176,7 @@ konkeio turn_off_all mul 192.168.0.64
 konkeio get_brightness klight 192.168.0.64
 konkeio set_color klight 192.168.0.64 255,255,0
 konkeio set_ct kbulb 192.168.0.64 3400
-konkeio turn_off bulb 192.168.0.64
+konkeio turn_off kbulb 192.168.0.64
 ```
+
+The CLI talks to devices over local UDP. Make sure the host running the command is on the same LAN as the device and can send/receive UDP packets on port 27431.
