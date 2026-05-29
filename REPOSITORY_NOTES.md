@@ -1,5 +1,7 @@
 # Repository Notes
 
+Original project: `jedmeng/python-konkeio`. This fork keeps GPLv3 licensing and publishes under the new `pykongke` distribution/import/CLI name.
+
 Distribution name: `pykongke`. Current release line: `3.x`. Import package: `pykongke`. CLI command: `pykongke`.
 
 This project is an asyncio-based LAN client for Konke smart devices. It sends encrypted UDP commands to devices on port `27431` and listens for encrypted UDP responses on the same socket.

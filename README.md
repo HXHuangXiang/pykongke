@@ -1,6 +1,7 @@
 # PyKongke
 
 This is a maintained fork of KonkeIO for controlling Konke LAN smart devices.
+Original project: `jedmeng/python-konkeio`. This fork keeps the GPLv3 license and continues maintenance under the `pykongke` package name.
 This library (and its accompanying cli tool) is used to interface with
 Konke remote-control devices.
 
