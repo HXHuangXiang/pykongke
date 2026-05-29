@@ -7,7 +7,7 @@ from . import manager
 from . import error
 
 help_content = '''
-usage: konkeio [action] [device] [address] [value] [--verbose]
+usage: pykongke [action] [device] [address] [value] [--verbose]
 
 Supported devices and actions supported by each device:
 global: search help
@@ -27,19 +27,19 @@ ct:         2700-6500
 brightness: 0-100
 
 Example:
-konkeio search
-konkeio turn_on minik 192.168.0.64
-konkeio get_status minik 192.168.0.64
-konkeio turn_on_usb k2 192.168.0.64
-konkeio turn_off_light k2 192.168.0.64
-konkeio get_count micmul 192.168.0.64
-konkeio turn_on_socket3 micmul 192.168.0.64
-konkeio get_status2 mul 192.168.0.64
-konkeio turn_off_all mul 192.168.0.64
-konkeio get_brightness klight 192.168.0.64
-konkeio set_color klight 192.168.0.64 255,255,0
-konkeio set_ct kbulb 192.168.0.64 3400
-konkeio turn_off kbulb 192.168.0.64
+pykongke search
+pykongke turn_on minik 192.168.0.64
+pykongke get_status minik 192.168.0.64
+pykongke turn_on_usb k2 192.168.0.64
+pykongke turn_off_light k2 192.168.0.64
+pykongke get_count micmul 192.168.0.64
+pykongke turn_on_socket3 micmul 192.168.0.64
+pykongke get_status2 mul 192.168.0.64
+pykongke turn_off_all mul 192.168.0.64
+pykongke get_brightness klight 192.168.0.64
+pykongke set_color klight 192.168.0.64 255,255,0
+pykongke set_ct kbulb 192.168.0.64 3400
+pykongke turn_off kbulb 192.168.0.64
 '''
 
 
@@ -48,7 +48,7 @@ def print_device(ip, mac, password, *_):
 
 
 async def main():
-    parser = argparse.ArgumentParser(prog="konkeio", epilog=help_content,
+    parser = argparse.ArgumentParser(prog="pykongke", epilog=help_content,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('action', help='action name')
     parser.add_argument('device', help='device type', nargs='?')
@@ -77,8 +77,8 @@ async def main():
     else:
         try:
             if args.address is None or args.device is None:
-                print('Usage: konkeio [action] [device] [address] [value] [--verbose]')
-                print("Try 'konkeio help' for more information.")
+                print('Usage: pykongke [action] [device] [address] [value] [--verbose]')
+                print("Try 'pykongke help' for more information.")
                 exit(0)
 
             device = manager.get_device(args.address, args.device)

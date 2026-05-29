@@ -1,7 +1,7 @@
 import pytest
 from mock.mock_klight import MockKLight
-from pykonkeio.device.klight import KLight
-from pykonkeio import manager as client_manager
+from pykongke.device.klight import KLight
+from pykongke import manager as client_manager
 
 
 @pytest.fixture(scope='module')

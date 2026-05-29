@@ -1,8 +1,8 @@
 import time
 import pytest
 from mock.mock_minik import MockMiniK
-from pykonkeio.device.minik import MiniK
-from pykonkeio import manager as client_manager
+from pykongke.device.minik import MiniK
+from pykongke import manager as client_manager
 
 
 @pytest.fixture(scope='module')

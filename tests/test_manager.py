@@ -1,7 +1,7 @@
-from pykonkeio import manager
-from pykonkeio.device.basetoggle import BaseToggle
-from pykonkeio.device.k1 import K1
-from pykonkeio.device.k2 import K2
+from pykongke import manager
+from pykongke.device.basetoggle import BaseToggle
+from pykongke.device.k1 import K1
+from pykongke.device.k2 import K2
 
 
 def test_get_device_cache_uses_ip_and_device_type():

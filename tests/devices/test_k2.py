@@ -3,8 +3,8 @@ import re
 import time
 import asyncio
 from mock.mock_k2 import MockK2
-from pykonkeio.device.k2 import K2
-from pykonkeio import manager as client_manager
+from pykongke.device.k2 import K2
+from pykongke import manager as client_manager
 
 
 @pytest.fixture(scope='module')

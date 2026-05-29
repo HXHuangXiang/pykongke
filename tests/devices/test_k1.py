@@ -1,7 +1,7 @@
 import pytest
 from mock.mock_k1 import MockK1
-from pykonkeio.device.k1 import K1
-from pykonkeio import manager as client_manager
+from pykongke.device.k1 import K1
+from pykongke import manager as client_manager
 
 
 @pytest.fixture(scope='module')

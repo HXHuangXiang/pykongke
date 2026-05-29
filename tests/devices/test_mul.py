@@ -1,8 +1,8 @@
 import pytest
 import random
 from mock.mock_mul import MockMul
-from pykonkeio.device.mul import Mul
-from pykonkeio import manager as client_manager
+from pykongke.device.mul import Mul
+from pykongke import manager as client_manager
 
 
 @pytest.fixture(scope='module')

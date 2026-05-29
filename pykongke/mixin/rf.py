@@ -3,7 +3,7 @@ import asyncio
 from .. import error
 from abc import abstractmethod, ABCMeta
 
-DEFAULT_GROUP = 'pykonkeio'
+DEFAULT_GROUP = 'pykongke'
 
 
 class RFMixin(metaclass=ABCMeta):

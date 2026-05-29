@@ -1,7 +1,7 @@
 import pytest
 from mock.mock_kbulb import MockKBulb
-from pykonkeio.device.kbulb import KBulb
-from pykonkeio import manager as client_manager
+from pykongke.device.kbulb import KBulb
+from pykongke import manager as client_manager
 
 
 @pytest.fixture(scope='module')

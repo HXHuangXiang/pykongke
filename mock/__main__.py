@@ -5,7 +5,7 @@ import asyncio
 
 
 async def main():
-    parser = argparse.ArgumentParser(prog="konkeio")
+    parser = argparse.ArgumentParser(prog="pykongke")
     parser.add_argument('device', help='device type')
 
     args = parser.parse_args()

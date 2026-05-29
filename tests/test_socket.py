@@ -2,7 +2,7 @@ import importlib
 
 
 def test_socket_import_does_not_create_udp_socket():
-    import pykonkeio.socket as client_socket
+    import pykongke.socket as client_socket
 
     client_socket = importlib.reload(client_socket)
 
@@ -10,7 +10,7 @@ def test_socket_import_does_not_create_udp_socket():
 
 
 def test_socket_send_initializes_udp_socket(monkeypatch):
-    import pykonkeio.socket as client_socket
+    import pykongke.socket as client_socket
 
     created = []
 
@@ -39,7 +39,7 @@ def test_socket_send_initializes_udp_socket(monkeypatch):
 
 
 def test_remove_receiver_does_not_underflow():
-    import pykonkeio.socket as client_socket
+    import pykongke.socket as client_socket
 
     client_socket._receivers_count = 0
 

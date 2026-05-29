@@ -2,7 +2,7 @@ import socket
 import logging
 import asyncio
 import math
-from pykonkeio import utils
+from pykongke import utils
 
 _PORT = 27431
 

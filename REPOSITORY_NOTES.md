@@ -1,13 +1,15 @@
 # Repository Notes
 
+Distribution name: `pykongke`. Import package: `pykongke`. CLI command: `pykongke`.
+
 This project is an asyncio-based LAN client for Konke smart devices. It sends encrypted UDP commands to devices on port `27431` and listens for encrypted UDP responses on the same socket.
 
 ## Runtime Shape
 
-- `pykonkeio/socket.py` owns UDP send/receive state. The socket is created lazily on first use, and receiver callbacks are registered before outgoing command packets are sent to avoid missing fast LAN responses.
-- `pykonkeio/manager.py` handles discovery and device instance caching. Devices are cached by `(ip, device_type)` so the same IP can be represented as different explicit models when needed.
-- `pykonkeio/device/` contains device models. Most switch-like devices inherit from `BaseToggle`; power strips inherit from `BaseMul`; K2 and MiniK add IR/RF behavior through mixins.
-- `pykonkeio/mixin/ir.py` and `pykonkeio/mixin/rf.py` implement learn/emit/remove flows over the `uart` action type.
+- `pykongke/socket.py` owns UDP send/receive state. The socket is created lazily on first use, and receiver callbacks are registered before outgoing command packets are sent to avoid missing fast LAN responses.
+- `pykongke/manager.py` handles discovery and device instance caching. Devices are cached by `(ip, device_type)` so the same IP can be represented as different explicit models when needed.
+- `pykongke/device/` contains device models. Most switch-like devices inherit from `BaseToggle`; power strips inherit from `BaseMul`; K2 and MiniK add IR/RF behavior through mixins.
+- `pykongke/mixin/ir.py` and `pykongke/mixin/rf.py` implement learn/emit/remove flows over the `uart` action type.
 
 ## Development
 
@@ -30,9 +32,9 @@ The tests use UDP sockets and may need a non-sandboxed environment. Mock devices
 Example commands against a real MiniK:
 
 ```bash
-python -m pykonkeio get_status minik 172.17.30.221
-python -m pykonkeio turn_on minik 172.17.30.221
-python -m pykonkeio turn_off minik 172.17.30.221
+python -m pykongke get_status minik 172.17.30.221
+python -m pykongke turn_on minik 172.17.30.221
+python -m pykongke turn_off minik 172.17.30.221
 ```
 
 ## Maintenance Notes

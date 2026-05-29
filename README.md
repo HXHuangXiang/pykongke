@@ -1,4 +1,6 @@
-# KonkeIO
+# PyKongke
+
+This is a maintained fork of KonkeIO for controlling Konke LAN smart devices.
 This library (and its accompanying cli tool) is used to interface with
 Konke remote-control devices.
 
@@ -21,7 +23,7 @@ Since some of Konke's device does not have a clear model, I used internal code t
 ## Install
 
 ```bash
-pip install pykonkeio
+pip install pykongke
 ```
 
 Python 3.7+ is required.
@@ -121,7 +123,7 @@ Demo:
 
 ```python
 import asyncio
-from pykonkeio import K2
+from pykongke import K2
 
 
 async def main():
@@ -144,7 +146,7 @@ asyncio.run(main())
 ## CLI Command
 
 ```bash
-usage: konkeio [action] [device] [address] [value] [--verbose]
+usage: pykongke [action] [device] [address] [value] [--verbose]
 
 Supported devices and actions supported by each device:
 global: search help
@@ -163,20 +165,20 @@ ct:         2700-6500
 brightness: 0-100
 
 example:
-konkeio search
-konkeio turn_on minik 192.168.0.64
-konkeio get_status minik 192.168.0.64
-konkeio get_power k2 192.168.0.64
-konkeio turn_on_usb k2 192.168.0.64
-konkeio turn_off_light k2 192.168.0.64
-konkeio get_count micmul 192.168.0.64
-konkeio turn_on_socket3 micmul 192.168.0.64
-konkeio get_status2 mul 192.168.0.64
-konkeio turn_off_all mul 192.168.0.64
-konkeio get_brightness klight 192.168.0.64
-konkeio set_color klight 192.168.0.64 255,255,0
-konkeio set_ct kbulb 192.168.0.64 3400
-konkeio turn_off kbulb 192.168.0.64
+pykongke search
+pykongke turn_on minik 192.168.0.64
+pykongke get_status minik 192.168.0.64
+pykongke get_power k2 192.168.0.64
+pykongke turn_on_usb k2 192.168.0.64
+pykongke turn_off_light k2 192.168.0.64
+pykongke get_count micmul 192.168.0.64
+pykongke turn_on_socket3 micmul 192.168.0.64
+pykongke get_status2 mul 192.168.0.64
+pykongke turn_off_all mul 192.168.0.64
+pykongke get_brightness klight 192.168.0.64
+pykongke set_color klight 192.168.0.64 255,255,0
+pykongke set_ct kbulb 192.168.0.64 3400
+pykongke turn_off kbulb 192.168.0.64
 ```
 
 The CLI talks to devices over local UDP. Make sure the host running the command is on the same LAN as the device and can send/receive UDP packets on port 27431.

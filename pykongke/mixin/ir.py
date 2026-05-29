@@ -2,7 +2,7 @@ import time
 import asyncio
 from .. import error
 
-DEFAULT_GROUP = 'pykonkeio'
+DEFAULT_GROUP = 'pykongke'
 
 
 class IRMixin:
